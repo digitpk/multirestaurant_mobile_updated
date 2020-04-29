@@ -1,0 +1,9 @@
+// This is a generated file; do not edit or check into version control.
+FLUTTER_ROOT=/home/msp/Desktop/MyOldPcData/Flutter/sdk/flutter
+FLUTTER_APPLICATION_PATH=/home/msp/Desktop/MyOldPcData/MSPProjects/Flutter_Projects/FoodDeliveryFlutter/Code/ClientNewCode_V1_9_2/V1_9_2/Multi_Restaurants_V1_9_2
+FLUTTER_TARGET=lib/main.dart
+FLUTTER_BUILD_DIR=build
+SYMROOT=${SOURCE_ROOT}/../build/ios
+FLUTTER_FRAMEWORK_DIR=/home/msp/Desktop/MyOldPcData/Flutter/sdk/flutter/bin/cache/artifacts/engine/ios
+FLUTTER_BUILD_NAME=1.1.0
+FLUTTER_BUILD_NUMBER=1.1.0

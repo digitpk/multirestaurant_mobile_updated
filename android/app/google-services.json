@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "723166004213",
+    "firebase_url": "https://dinymultirest.firebaseio.com",
+    "project_id": "dinymultirest",
+    "storage_bucket": "dinymultirest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723166004213:android:08302666e60b2b813116bc",
+        "android_client_info": {
+          "package_name": "com.diny.fadihalabi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723166004213-lm3ge9pk708uq9aebbvdkcvt32h6mnn5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz7UwIICD6N1e826IA21evapm25Sx4RKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723166004213-lm3ge9pk708uq9aebbvdkcvt32h6mnn5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "723166004213-5blc0lrrce1852hb5bbu6b57l51ibrhe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.diny.fadihalabi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
