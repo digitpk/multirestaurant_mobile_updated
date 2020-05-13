@@ -1,42 +1,35 @@
 {
   "project_info": {
-    "project_number": "723166004213",
-    "firebase_url": "https://dinymultirest.firebaseio.com",
-    "project_id": "dinymultirest",
-    "storage_bucket": "dinymultirest.appspot.com"
+    "project_number": "480604133835",
+    "firebase_url": "https://tazminclientapp.firebaseio.com",
+    "project_id": "tazminclientapp",
+    "storage_bucket": "tazminclientapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723166004213:android:08302666e60b2b813116bc",
+        "mobilesdk_app_id": "1:480604133835:android:834913e06326a7bedc7e4e",
         "android_client_info": {
-          "package_name": "com.diny.fadihalabi"
+          "package_name": "com.tazmin.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "723166004213-lm3ge9pk708uq9aebbvdkcvt32h6mnn5.apps.googleusercontent.com",
+          "client_id": "480604133835-jrvqag47c4sv1932c06rlvrsf9f67p52.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDz7UwIICD6N1e826IA21evapm25Sx4RKE"
+          "current_key": "AIzaSyDsZkw4C1Sj5RWrxoguGW1VOqjWztOT4w0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "723166004213-lm3ge9pk708uq9aebbvdkcvt32h6mnn5.apps.googleusercontent.com",
+              "client_id": "480604133835-jrvqag47c4sv1932c06rlvrsf9f67p52.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "723166004213-5blc0lrrce1852hb5bbu6b57l51ibrhe.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.diny.fadihalabi"
-              }
             }
           ]
         }
