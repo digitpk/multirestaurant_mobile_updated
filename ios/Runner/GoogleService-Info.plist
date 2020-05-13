@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>723166004213-5blc0lrrce1852hb5bbu6b57l51ibrhe.apps.googleusercontent.com</string>
+	<string>480604133835-rbvfavoshr6c9ee2c175b9ojlhr0jp6p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.723166004213-5blc0lrrce1852hb5bbu6b57l51ibrhe</string>
+	<string>com.googleusercontent.apps.480604133835-rbvfavoshr6c9ee2c175b9ojlhr0jp6p</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDCd4md3t0paAltRa_HgDJP1SgGvA8E2Mw</string>
+	<string>AIzaSyAjMC7roHoQor9f2tqhtIk7VXZT2YdrRlE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>723166004213</string>
+	<string>480604133835</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.diny.fadihalabi</string>
+	<string>com.tazmin.ios</string>
 	<key>PROJECT_ID</key>
-	<string>dinymultirest</string>
+	<string>tazminclientapp</string>
 	<key>STORAGE_BUCKET</key>
-	<string>dinymultirest.appspot.com</string>
+	<string>tazminclientapp.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:723166004213:ios:0aeebe08a0eb3f163116bc</string>
+	<string>1:480604133835:ios:1aa9a8a68f03ec8fdc7e4e</string>
 	<key>DATABASE_URL</key>
-	<string>https://dinymultirest.firebaseio.com</string>
+	<string>https://tazminclientapp.firebaseio.com</string>
 </dict>
 </plist>
