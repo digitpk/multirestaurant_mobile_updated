@@ -230,7 +230,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 25),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Expanded(
                                       child:
@@ -247,7 +247,20 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                                 .textTheme
                                                 .display2,
                                           ),
-                                          _con.isOpeningRestaurantStatus ? Chip(
+                                          _con.restaurant.minOrderPrice > 0 ? Row(children: <Widget>[
+                                            Text(
+                                              S.of(context).min_order,
+                                              overflow: TextOverflow.fade,
+                                              softWrap: false,
+                                              maxLines: 2,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subhead,
+                                            ),
+                                            SizedBox(width: 5,),
+                                            Helper.getPrice(_con.restaurant.minOrderPrice, context),
+                                          ],) : Container(),
+                                          /*_con.isOpeningRestaurantStatus ? Chip(
                                             backgroundColor: appConfig.Colors().greenColor(1),
                                             shape: StadiumBorder(),
                                             padding: EdgeInsets.all(5),
@@ -267,10 +280,32 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                                     .body2
                                                     .merge(TextStyle(
                                                     color: appConfig.Colors().scaffoldDarkColor(1)))),
-                                          ),
+                                          ),*/
                                         ],
                                       ),
                                     ),
+                                    _con.isOpeningRestaurantStatus ? Chip(
+                                      backgroundColor: appConfig.Colors().greenColor(1),
+                                      shape: StadiumBorder(),
+                                      padding: EdgeInsets.all(5),
+                                      label: Text(S.of(context).open,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body2
+                                              .merge(TextStyle(
+                                              color:appConfig.Colors().scaffoldColor(1)))),
+                                    ) : Chip(
+                                      backgroundColor: appConfig.Colors().grayColor(1),
+                                      shape: StadiumBorder(),
+                                      padding: EdgeInsets.all(5),
+                                      label: Text(S.of(context).close,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .body2
+                                              .merge(TextStyle(
+                                              color: appConfig.Colors().scaffoldDarkColor(1)))),
+                                    ),
+                                    SizedBox(width: 10,),
                                     SizedBox(
                                       height: 32,
                                       child: Chip(

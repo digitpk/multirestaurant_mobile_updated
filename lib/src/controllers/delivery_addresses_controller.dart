@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:food_delivery_app/src/models/address.dart' as model;
-import 'package:food_delivery_app/src/repository/user_repository.dart' as userRepo;
+import 'package:food_delivery_app/src/repository/user_repository.dart'
+    as userRepo;
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -9,19 +10,52 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 class DeliveryAddressesController extends ControllerMVC {
   List<model.Address> addresses = <model.Address>[];
   GlobalKey<ScaffoldState> scaffoldKey;
+  bool isLoadingData = false;
 
   DeliveryAddressesController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     getCurrentLocation();
   }
-  void addCurrentLocation(double latitude, double longitude) async
-  {
+
+  void getCurrentLocation() async {
+    setState(() {
+      isLoadingData = true;
+    });
+    GeolocationStatus geolocationStatus =
+        await Geolocator().checkGeolocationPermissionStatus();
+    print('geolocationStatus.value:${geolocationStatus.value}');
+    if (geolocationStatus.value == 2) {
+      //for granted
+      print('permission granted');
+      Geolocator()
+          .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high)
+          .then((position) async {
+        if (position != null) {
+          addCurrentLocation(position.latitude, position.longitude);
+        } else {
+          print('last position null');
+          Geolocator()
+              .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+              .then((position) async {
+            if (position != null) {
+              addCurrentLocation(position.latitude, position.longitude);
+            }
+          });
+        }
+      });
+    }
+    listenForAddresses();
+  }
+
+  void addCurrentLocation(double latitude, double longitude) async {
     print('locationData.latitude:${latitude}');
     print('locationData.longitude:${longitude}');
     final coordinates = new Coordinates(latitude, longitude);
-    var addressesByLatLong = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var addressesByLatLong =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addressesByLatLong.first;
-    print("featureName:${first.featureName} /addressLine : ${first.addressLine}");
+    print(
+        "featureName:${first.featureName} /addressLine : ${first.addressLine}");
     model.Address address = new model.Address();
     address.id = "0";
     address.isDefault = false;
@@ -31,48 +65,26 @@ class DeliveryAddressesController extends ControllerMVC {
     address.longitude = longitude.toString();
     print('address.latitude:${address.latitude}');
     print('address.longitude:${address.longitude}');
-    setState(() {
-      addresses.insert(0,address);
-    });
+    //setState(() {
+    addresses.insert(0, address);
+    //});
   }
-  void getCurrentLocation() async {
-    GeolocationStatus geolocationStatus =
-    await Geolocator().checkGeolocationPermissionStatus();
-    print('geolocationStatus.value:${geolocationStatus.value}');
-    if (geolocationStatus.value == 2) {
-      //for granted
-      print('permission granted');
-      Geolocator()
-          .getLastKnownPosition(desiredAccuracy: LocationAccuracy.high)
-          .then((position) async {
-        if (position != null) {
-          addCurrentLocation(position.latitude,position.longitude);
-        } else {
-          print('last position null');
-          Geolocator()
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-              .then((position) async {
-            if (position != null) {
-              addCurrentLocation(position.latitude,position.longitude);
-            }
-          });
-        }
-      });
-    }
-    listenForAddresses();
-  }
+
   void listenForAddresses({String message}) async {
     final Stream<model.Address> stream = await userRepo.getAddresses();
     stream.listen((model.Address _address) {
-      setState(() {
-        addresses.add(_address);
-      });
+      //setState(() {
+      addresses.add(_address);
+      //});
     }, onError: (a) {
       print(a);
       /*scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.current.verify_your_internet_connection),
       ));*/
     }, onDone: () {
+      setState(() {
+        isLoadingData = false;
+      });
       if (message != null) {
         scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(message),
@@ -87,10 +99,12 @@ class DeliveryAddressesController extends ControllerMVC {
   }
 
   void addAddress(model.Address address) {
+    setState(() {
+      isLoadingData = true;
+    });
     userRepo.addAddress(address).then((value) {
-      setState(() {
-        this.addresses.add(value);
-      });
+      addresses.clear();
+      getCurrentLocation();
       scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.current.new_address_added_successfully),
       ));

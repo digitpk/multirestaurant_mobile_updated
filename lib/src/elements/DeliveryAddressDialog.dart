@@ -9,8 +9,8 @@ class DeliveryAddressDialog {
   Address address;
   ValueChanged<Address> onChanged;
   GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
-
-  DeliveryAddressDialog({this.context, this.address, this.onChanged}) {
+  bool isForCurrentLocation = false;
+  DeliveryAddressDialog({this.context, this.address, this.onChanged,this.isForCurrentLocation}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -48,8 +48,27 @@ class DeliveryAddressDialog {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: new TextFormField(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child:
+                      isForCurrentLocation? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        SizedBox(height: 10,),
+                        Text(
+                          S.of(context).full_address,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: Theme.of(context).textTheme.subtitle.merge(TextStyle(fontSize: 12)),
+                        ),
+                        SizedBox(height: 10,),
+                        Text(
+                        address.address,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        style: Theme.of(context).textTheme.subtitle.merge(TextStyle(fontSize: 12)),
+                      ) ],):
+                      new TextFormField(
                         style: TextStyle(color: Theme.of(context).hintColor),
                         keyboardType: TextInputType.text,
                         decoration: getInputDecoration(

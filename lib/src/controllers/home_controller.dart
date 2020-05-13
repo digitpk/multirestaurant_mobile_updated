@@ -11,6 +11,7 @@ import 'package:food_delivery_app/src/models/res_category.dart';
 import 'package:food_delivery_app/src/models/restaurant.dart';
 import 'package:food_delivery_app/src/models/review.dart';
 import 'package:food_delivery_app/src/models/route_argument.dart';
+import 'package:food_delivery_app/src/models/setting.dart';
 import 'package:food_delivery_app/src/pages/splash_screen.dart';
 import 'package:food_delivery_app/src/repository/category_repository.dart';
 import 'package:food_delivery_app/src/repository/food_repository.dart';
@@ -23,6 +24,7 @@ import 'package:location/location.dart' as location;
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:package_info/package_info.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends ControllerMVC {
@@ -37,16 +39,17 @@ class HomeController extends ControllerMVC {
   String resCatId  = "0";
   location.LocationData locationData;
   static String resCatIdRefresh = "0";
-  LocationAccuracy desiredAccuracy = LocationAccuracy.best;
+  Setting setting;
+  location.LocationAccuracy desiredAccuracy = location.LocationAccuracy.high;
   HomeController() {
     userRepo.getResCat().then((resCatId) {
       if (resCatId != null) {
         this.resCatId = resCatId;
-        getLatLong();
+        getAllDashboard();
       }
     });
   }
-  void getAllDashboard() {
+  void getAllDashboard() async{
     print('id:$resCatId');
     resCatIdRefresh = resCatId;
     getAppVersion();
@@ -57,9 +60,15 @@ class HomeController extends ControllerMVC {
       SplashScreen.isFirstTime = false;
       listenForOffers();
     }
-    listenForTopRestaurants();
+    //getLatLong();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('currentLat') && prefs.containsKey('currentLon')) {
+      locationData =
+          location.LocationData.fromMap({"latitude": prefs.getDouble('currentLat'), "longitude": prefs.getDouble('currentLon')});
+    }
+    listenForTopRestaurants(locationData);
   }
-  void getLatLong() async {
+  /*void getLatLong() async {
     Geolocator()
         .getLastKnownPosition(desiredAccuracy: desiredAccuracy)
         .then((position) async {
@@ -67,7 +76,7 @@ class HomeController extends ControllerMVC {
         print('last new lat:${position.latitude}');
         print('last new long:${position.longitude}');
         locationData = location.LocationData.fromMap({"latitude": position.latitude, "longitude":position.longitude});
-        getAllDashboard();
+        listenForTopRestaurants(locationData);
       } else {
         print('last position null');
         Geolocator()
@@ -76,15 +85,19 @@ class HomeController extends ControllerMVC {
           if (position != null) {
             print('new lat:${position.latitude}');
             print('new long:${position.longitude}');
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setDouble('currentLat', locationData.latitude);
+            await prefs.setDouble('currentLon', locationData.longitude);
             locationData = location.LocationData.fromMap({"latitude": position.latitude, "longitude":position.longitude});
-            getAllDashboard();
+            listenForTopRestaurants(locationData);
           } else {
             print('position null');
+            listenForTopRestaurants(locationData);
           }
         });
       }
     });
-  }
+  }*/
   void getAppVersion() {
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       String appName = packageInfo.appName;
@@ -96,6 +109,9 @@ class HomeController extends ControllerMVC {
       print('version:$packageVersion');
       print('buildNumber:$buildNumber');
       getCurrentSettings().then((setting) {
+        setState((){
+          this.setting = setting;
+        });
         print('compareTo:${packageVersion.compareTo(setting.appVersion)}');
         if (packageVersion.compareTo(setting.appVersion) < 0) {
           appVersionAlert();
@@ -253,9 +269,10 @@ class HomeController extends ControllerMVC {
     }, onError: (a) {}, onDone: () {});
   }
 
-  void listenForTopRestaurants() async {
-    getCurrentLocation().then((location.LocationData _locationData) async {
-      final Stream<Restaurant> stream = await getNearRestaurants(_locationData, _locationData, resCatIdRefresh);
+  void listenForTopRestaurants(location.LocationData locationData) async {
+   // getCurrentLocation().then((location.LocationData _locationData) async {
+    topRestaurants.clear();
+      final Stream<Restaurant> stream = await getNearRestaurants(locationData, locationData, resCatIdRefresh);
       stream.listen((Restaurant _restaurant) {
         setState(() => topRestaurants.add(_restaurant));
       }, onError: (a) {
@@ -263,7 +280,7 @@ class HomeController extends ControllerMVC {
       }, onDone: () {
         print('listenForTopRestaurants Done:${topRestaurants.length}');
       });
-    });
+    //});
   }
 
   void listenForRecentReviews() async {
@@ -288,7 +305,7 @@ class HomeController extends ControllerMVC {
     recentReviews = <Review>[];
     trendingFoods = <Food>[];
     listenForCategories();
-    listenForTopRestaurants();
+    listenForTopRestaurants(locationData);
     listenForTrendingFoods();
   }
 }

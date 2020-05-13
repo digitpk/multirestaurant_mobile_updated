@@ -6,8 +6,11 @@ import 'package:food_delivery_app/src/elements/ResCatListItemWidget.dart';
 import 'package:food_delivery_app/src/helpers/app_config.dart' as config;
 import 'package:food_delivery_app/src/models/res_category.dart';
 import 'package:food_delivery_app/src/models/route_argument.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location_permissions/location_permissions.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:location/location.dart' as location;
 class ResCategoriesWidget extends StatefulWidget {
   RouteArgument routeArgument;
 
@@ -19,7 +22,7 @@ class ResCategoriesWidget extends StatefulWidget {
 
 class _ResCategoriesWidgetState extends StateMVC<ResCategoriesWidget> {
   ResCategoriesController _con;
-
+  LocationAccuracy desiredAccuracy = LocationAccuracy.best;
   _ResCategoriesWidgetState() : super(ResCategoriesController()) {
     _con = controller;
   }
@@ -27,13 +30,39 @@ class _ResCategoriesWidgetState extends StateMVC<ResCategoriesWidget> {
   @override
   void initState() {
     super.initState();
+    getCurrentLocation();
     if (widget.routeArgument != null) {
       _con.resCategories = widget.routeArgument.param;
     } else {
       _con.listenForResCategories();
     }
   }
-
+  void getCurrentLocation() async
+  {
+    GeolocationStatus geolocationStatus =
+        await Geolocator().checkGeolocationPermissionStatus();
+    print('geolocationStatus.value:${geolocationStatus.value}');
+    if (geolocationStatus.value == 2) {
+      ServiceStatus serviceStatus =
+          await LocationPermissions().checkServiceStatus();
+      print('serviceStatus:$serviceStatus');
+      if (serviceStatus == ServiceStatus.enabled) {
+        Geolocator()
+            .getCurrentPosition(desiredAccuracy: desiredAccuracy)
+            .then((position) async {
+          if (position != null) {
+            print('new lat:${position.latitude}');
+            print('new long:${position.longitude}');
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setDouble('currentLat', position.latitude);
+            await prefs.setDouble('currentLon', position.longitude);
+          } else {
+            print('position null');
+          }
+        });
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

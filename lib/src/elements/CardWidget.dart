@@ -128,17 +128,18 @@ class CardWidget extends StatelessWidget {
   }
 
   void goToMapExplore() async {
+    String url ="https://www.google.com/maps/dir/?api=1&origin=" +
+        "${currentLocation.latitude},${currentLocation.longitude}" +
+        "&destination=" +
+        restaurant.latitude +
+        "," +
+        restaurant.longitude +
+        "&travelmode=driving&dir_action=navigate";
+    print('redirect URL: $url');
     if (Platform.isAndroid) {
       AndroidIntent intent = AndroidIntent(
           action: 'action_view',
-          data: Uri.encodeFull(
-              "https://www.google.com/maps/dir/?api=1&origin=" +
-                  "${currentLocation.latitude},${currentLocation.longitude}" +
-                  "&destination=" +
-                  restaurant.latitude +
-                  "," +
-                  restaurant.longitude +
-                  "&travelmode=driving&dir_action=navigate"),
+          data: Uri.encodeFull(url),
           package: 'com.google.android.apps.maps');
       intent.launch();
     } else {

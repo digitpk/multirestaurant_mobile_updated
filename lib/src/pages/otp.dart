@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:food_delivery_app/src/helpers/app_config.dart' as config;
 import 'package:food_delivery_app/generated/i18n.dart';
@@ -135,13 +136,18 @@ class _OTPWidgetState extends StateMVC<OTPWidget> {
         ),
       ),
       SizedBox(height: 30),
-      BlockButtonWidget(
+      _con.isLoading
+          ? CircularLoadingWidget(
+        height: 50,
+      )
+          : BlockButtonWidget(
         text: Text(
           S.of(context).verify,
           style: TextStyle(color: Theme.of(context).primaryColor),
         ),
         color: Theme.of(context).accentColor,
         onPressed: () {
+          _con.loginFormKey.currentState.save();
           _con.verify();
         },
       ),

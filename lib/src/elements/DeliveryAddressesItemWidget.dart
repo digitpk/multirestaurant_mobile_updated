@@ -24,7 +24,6 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
         highlightColor: Theme.of(context).primaryColor,
         onTap: () {
           this.onPressed(address);
-          Navigator.of(context).pushNamed('/PaymentMethod');
         },
         onLongPress: () {
           this.onLongPress(address);

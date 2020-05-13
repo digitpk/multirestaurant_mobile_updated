@@ -213,6 +213,12 @@ class S implements WidgetsLocalizations {
   String get alert_no => "No";
   String get pay_alert_title => "Pay";
   String pay_alert_message(String ccLast4Digit) => "Are you want pay with saved $ccLast4Digit Credit Card?";
+  String get alert_title_min_order => "Minimum Order";
+  String alert_message_min_order(double minOrderPrice,String currency) => "Should be minimum order $currency$minOrderPrice";
+  String get alert_title_save_address => "Save Current Location Address";
+  String get alert_message_save_address => "Are you want save this current location address?";
+  String get alert_title_login_fail => "Login Fail";
+  String get min_order => "Minimum Order:";
 }
 class $en extends S {
   const $en();
@@ -584,6 +590,18 @@ class $he extends S {
   String get pay_alert_title => "Pay";
   @override
   String pay_alert_message(String ccLast4Digit) => "Are you want pay with saved $ccLast4Digit Credit Card?";
+  @override
+  String get alert_title_min_order => "Minimum Order";
+  @override
+  String alert_message_min_order(double minOrderPrice,String currency) => "Should be minimum order $currency$minOrderPrice";
+  @override
+  String get alert_title_save_address => "Save Current Location Address";
+  @override
+  String get alert_message_save_address => "Are you want save this current location address?";
+  @override
+  String get alert_title_login_fail => "Login Fail";
+  @override
+  String get min_order => "Minimum Order:";
 }
 class $ar extends S {
   const $ar();
@@ -959,6 +977,18 @@ class $ar extends S {
   String get pay_alert_title => "Pay";
   @override
   String pay_alert_message(String ccLast4Digit) => "Are you want pay with saved $ccLast4Digit Credit Card?";
+  @override
+  String get alert_title_min_order => "Minimum Order";
+  @override
+  String alert_message_min_order(double minOrderPrice,String currency) => "Should be minimum order $currency$minOrderPrice";
+  @override
+  String get alert_title_save_address => "Save Current Location Address";
+  @override
+  String get alert_message_save_address => "Are you want save this current location address?";
+  @override
+  String get alert_title_login_fail => "Login Fail";
+  @override
+  String get min_order => "Minimum Order:";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {

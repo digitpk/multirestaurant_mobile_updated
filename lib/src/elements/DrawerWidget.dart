@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:food_delivery_app/src/controllers/profile_controller.dart';
+import 'package:food_delivery_app/src/helpers/helper.dart';
 import 'package:food_delivery_app/src/repository/settings_repository.dart';
 import 'package:food_delivery_app/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -12,11 +13,11 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends StateMVC<DrawerWidget> {
-  ProfileController _con;
+  //ProfileController _con;
 
-  _DrawerWidgetState() : super(ProfileController()) {
+  /*_DrawerWidgetState() : super(ProfileController()) {
     _con = controller;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Theme.of(context).accentColor,
-                      backgroundImage: NetworkImage(currentUser.value.image.thumb),
-                    ),
+                      backgroundImage: AssetImage(Helper.getRandomAvatar())),
+//                      NetworkImage(currentUser.value.image.thumb),
                   )
                 : Container(
                     padding: EdgeInsets.symmetric(vertical: 30, horizontal: 15),

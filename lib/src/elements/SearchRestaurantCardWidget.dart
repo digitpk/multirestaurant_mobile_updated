@@ -157,7 +157,7 @@ class SearchRestaurantCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('SearchRestaurantCardWidget :${restaurant.toMap()}');
+    //print('SearchRestaurantCardWidget :${restaurant.toMap()}');
     this.context = context;
     return Container(
       width: 292,

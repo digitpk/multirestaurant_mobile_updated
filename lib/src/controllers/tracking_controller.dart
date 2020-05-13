@@ -57,7 +57,7 @@ class TrackingController extends ControllerMVC {
         ),
         subtitle: order.orderStatus.id == _orderStatus.id
             ? Text(
-                '${DateFormat('HH:mm | yyyy-MM-FirebaseCloudMessagingPluginRegistrant.kt').format(order.dateTime)}',
+                '${DateFormat('HH:mm | yyyy-MM').format(order.dateTime)}',
                 style: Theme.of(context).textTheme.caption,
                 overflow: TextOverflow.ellipsis,
               )

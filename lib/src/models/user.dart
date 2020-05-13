@@ -10,6 +10,7 @@ class User {
   String phone;
   String address;
   String bio;
+  bool isOtpVerified;
   Media image;
 
   // used for indicate if client logged in or not
@@ -58,6 +59,7 @@ class User {
     map["phone"] = phone;
     map["address"] = address;
     map["bio"] = bio;
+    map["isOtpVerified"] = isOtpVerified;
     map["media"] = image?.toMap();
     return map;
   }

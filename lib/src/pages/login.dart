@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:food_delivery_app/src/controllers/user_controller.dart';
 import 'package:food_delivery_app/src/elements/BlockButtonWidget.dart';
+import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
 import 'package:food_delivery_app/src/helpers/app_config.dart' as config;
 import 'package:food_delivery_app/src/repository/user_repository.dart' as userRepo;
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -31,7 +33,15 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       resizeToAvoidBottomPadding: false,
-      body: Stack(
+      resizeToAvoidBottomInset: false,
+      body:
+      SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 150),
+          child:
+      Container(
+          height: MediaQuery.of(context).size.height,
+          child:
+      Stack(
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
           Positioned(
@@ -73,14 +83,15 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
 //              height: config.App(context).appHeight(55),
               child: Form(
                 key: _con.loginFormKey,
-                child: Column(
+                child:
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (input) => _con.user.email = input,
-                      validator: (input) => !input.contains('@') ? S.of(context).should_be_a_valid_email : null,
+                      validator: (input) => (_con.user.phone == null || _con.user.phone.length == 0)? !input.contains('@') ? S.of(context).should_be_a_valid_email : null:null,
                       decoration: InputDecoration(
                         labelText: S.of(context).email,
                         labelStyle: TextStyle(color: Theme.of(context).accentColor),
@@ -100,7 +111,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                     TextFormField(
                       keyboardType: TextInputType.text,
                       onSaved: (input) => _con.user.password = input,
-                      validator: (input) => input.length < 3 ? S.of(context).should_be_more_than_3_characters : null,
+                      validator: (input) => (_con.user.phone == null || _con.user.phone.length == 0)? input.length < 3 ? S.of(context).should_be_more_than_3_characters : null:null,
                       obscureText: _con.hidePassword,
                       decoration: InputDecoration(
                         labelText: S.of(context).password,
@@ -126,9 +137,9 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                             borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     Center(child: Text("-- OR --")),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     TextFormField(
                       keyboardType: TextInputType.phone,
                       onChanged: (input) => _con.user.phone = input,
@@ -157,7 +168,11 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                       ),
                     ),
                     SizedBox(height: 30),
-                    BlockButtonWidget(
+                    _con.isLoading
+                        ? CircularLoadingWidget(
+                      height: 50,
+                    )
+                        : BlockButtonWidget(
                       text: Text(
                         S.of(context).login,
                         style: TextStyle(color: Theme.of(context).primaryColor),
@@ -207,7 +222,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           )
         ],
-      ),
+      ))),
     );
   }
 }

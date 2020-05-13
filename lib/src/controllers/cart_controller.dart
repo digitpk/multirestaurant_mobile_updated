@@ -18,6 +18,7 @@ class CartController extends ControllerMVC {
   }
 
   void listenForCarts({String message}) async {
+    carts.clear();
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
       if (!carts.contains(_cart)) {
@@ -57,14 +58,13 @@ class CartController extends ControllerMVC {
   }
 
   void removeFromCart(Cart _cart) async {
-    setState(() {
-      this.carts.remove(_cart);
-    });
     removeCart(_cart).then((value) {
-      setState(() {
-        this.carts.remove(_cart);
-        refreshCarts();
-      });
+      if(value) {
+        setState(() {
+          this.carts.remove(_cart);
+          refreshCarts();
+        });
+      }
       scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.current.the_food_was_removed_from_your_cart(_cart.food.name)),
       ));

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:food_delivery_app/src/controllers/search_controller.dart';
-import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
 import 'package:food_delivery_app/src/models/route_argument.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-
 import 'SearchFoodCardWidget.dart';
 import 'SearchRestaurantCardWidget.dart';
 
@@ -67,13 +65,9 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                 child: TextField(
                   textInputAction: TextInputAction.search,
                   onChanged:  (text)  {
-
-                    new Future.delayed(const Duration(seconds: 1), () {
-                      print('search:$text');
-                      _con.restaurants.clear();
-                      _con.listenForRestaurants(text);
-                    });
-
+                    print('search:$text');
+                    _con.searchText = text;
+                    _con.listenForRestaurants();
                   },
                   onSubmitted: (text) {
                     //print('search:$text');

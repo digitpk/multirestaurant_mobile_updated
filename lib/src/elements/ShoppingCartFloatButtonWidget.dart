@@ -46,7 +46,7 @@ class _ShoppingCartFloatButtonWidgetState extends StateMVC<ShoppingCartFloatButt
         onPressed: () {
           if (currentUser.value.apiToken != null) {
             //Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Food', id: widget.food.id));
-            Navigator.of(context).pushReplacementNamed('/Cart', arguments: RouteArgument(param: '/Pages', id: '2'));
+            Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Pages', id: '2'));
           } else {
             Navigator.of(context).pushNamed('/Login');
           }

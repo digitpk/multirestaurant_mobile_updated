@@ -22,9 +22,16 @@ class ReviewItemWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              ClipRRect(
+              Container(
+                  width: 65,
+                  height: 65,
+                  child: CircleAvatar(
+                      backgroundColor: Theme.of(context).accentColor,
+                      backgroundImage: AssetImage(Helper.getRandomAvatar()))),
+              /*ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(100)),
-                child: CachedNetworkImage(
+                child:
+                CachedNetworkImage(
                   height: 65,
                   width: 65,
                   fit: BoxFit.cover,
@@ -37,7 +44,7 @@ class ReviewItemWidget extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
-              ),
+              ),*/
               SizedBox(width: 15),
               Flexible(
                 child: Column(
@@ -52,8 +59,8 @@ class ReviewItemWidget extends StatelessWidget {
                             overflow: TextOverflow.fade,
                             softWrap: false,
                             maxLines: 2,
-                            style:
-                                Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).hintColor)),
+                            style: Theme.of(context).textTheme.title.merge(
+                                TextStyle(color: Theme.of(context).hintColor)),
                           ),
                         ),
                         SizedBox(
@@ -67,7 +74,9 @@ class ReviewItemWidget extends StatelessWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .body2
-                                        .merge(TextStyle(color: Theme.of(context).primaryColor))),
+                                        .merge(TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColor))),
                                 Icon(
                                   Icons.star_border,
                                   color: Theme.of(context).primaryColor,
@@ -75,14 +84,16 @@ class ReviewItemWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
+                            backgroundColor:
+                                Theme.of(context).accentColor.withOpacity(0.9),
                             shape: StadiumBorder(),
                           ),
                         ),
                       ],
                     ),
                     Text(
-                      review.user.bio.substring(0, min(30, review.user.bio.length)),
+                      review.user.bio
+                          .substring(0, min(30, review.user.bio.length)),
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     )

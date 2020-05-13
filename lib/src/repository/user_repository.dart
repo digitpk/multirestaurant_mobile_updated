@@ -14,23 +14,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 ValueNotifier<User> currentUser = new ValueNotifier(User());
 Address deliveryAddress = new Address();
 
-Future<User> login(User user) async {
+Future<User> login(User user,bool isVerified) async {
+  if(isVerified)
+  {
+    user.isOtpVerified = true;
+  } else {
+    user.isOtpVerified = false;
+  }
+
   final String url = '${GlobalConfiguration().getString('api_base_url')}login';
+  print('Login : $url');
+  print('Login Params: ${user.toMap()}');
   final client = new http.Client();
   final response = await client.post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
+  print('response: ${json.decode(response.body)}');
+  print('response.statusCode: ${response.statusCode}');
   if (response.statusCode == 200) {
-    setCurrentUser(response.body);
-    try {
-      currentUser.value = User.fromJSON(json.decode(response.body)['data']);
-    } catch (e) {}
+    if(json.decode(response.body)['data'] != null) {
+      setCurrentUser(response.body);
+      try {
+        currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+      } catch (e) {
+        print('error:${e.toString()}');
+      }
+    } else {
+      currentUser.value.message = jsonDecode(response.body)['message'];
+    }
   }
-  if (currentUser.value.apiToken == null) {
+  /*if (currentUser.value.apiToken == null) {
     currentUser.value.message = jsonDecode(response.body)['message'];
-  }
+  }*/
   return currentUser.value;
 }
 
@@ -44,6 +61,7 @@ Future<User> register(User user) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
+  print('response:${json.decode(response.body)}');
   print('response.statusCode:${response.statusCode}');
   if (response.statusCode == 200) {
     print('currentUser:${currentUser.value.toMap()}');

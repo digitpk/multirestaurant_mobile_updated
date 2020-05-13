@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/pages/splash_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:food_delivery_app/generated/i18n.dart';
@@ -41,7 +42,48 @@ class _CartWidgetState extends StateMVC<CartWidget> {
     _con.listenForCarts();
     super.initState();
   }
+  void checkoutAlert(String message) {
+    Alert(
+      context: context,
+      type: AlertType.warning,
+      title: S.of(context).checkout,
+      desc: message,
+      buttons: [
+        DialogButton(
+          child: Text(
+            S.of(context).alert_ok,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          width: 120,
+        )
+      ],
+    ).show();
+  }
 
+  void minOrderAlert(double minOrderPrice) {
+    Alert(
+      context: context,
+      type: AlertType.info,
+      title: S.of(context).alert_title_min_order,
+      desc: S.of(context).alert_message_min_order(minOrderPrice,SplashScreen
+          .appSetting.defaultCurrency),
+      buttons: [
+        DialogButton(
+          child: Text(
+            S.of(context).alert_ok,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          width: 120,
+        )
+      ],
+    ).show();
+  }
   void locationEnableAlert() {
     Alert(
       context: context,
@@ -58,27 +100,6 @@ class _CartWidgetState extends StateMVC<CartWidget> {
             Navigator.pop(context);
             //LocationPermissions().openAppSettings();
             AppSettings.openLocationSettings();
-          },
-          width: 120,
-        )
-      ],
-    ).show();
-  }
-
-  void checkoutAlert(String message) {
-    Alert(
-      context: context,
-      type: AlertType.warning,
-      title: S.of(context).checkout,
-      desc: message,
-      buttons: [
-        DialogButton(
-          child: Text(
-            S.of(context).alert_ok,
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
           },
           width: 120,
         )
@@ -180,13 +201,14 @@ class _CartWidgetState extends StateMVC<CartWidget> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              if (widget.routeArgument.param == '/Food') {
+              Navigator.of(context).pop();
+              /*if (widget.routeArgument.param == '/Food') {
                 Navigator.of(context).pushReplacementNamed('/Food',
                     arguments: RouteArgument(id: widget.routeArgument.id));
               } else {
                 Navigator.of(context)
                     .pushReplacementNamed('/Pages', arguments: 2);
-              }
+              }*/
             },
             icon: Icon(Icons.arrow_back),
             color: Theme.of(context).hintColor,
@@ -364,25 +386,38 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                               /* Navigator.of(context).pushNamed('/DeliveryAddresses',
                                             arguments: new RouteArgument(
                                                 param: [_con.carts, _con.total, setting.value.defaultTax]));*/
-                                              setState(() {
-                                                isLoading = true;
-                                                settingRepo
-                                                    .initSettings()
-                                                    .then((setting) {
-                                                  print('called checkout');
-                                                  setState(() {
-                                                    isLoading = false;
-                                                    if (setting
-                                                            .checkoutAlertEnabled ==
-                                                        '1') {
-                                                      checkoutAlert(setting
-                                                          .checkoutAlertMessage);
-                                                    } else {
-                                                      checkLocationPermission();
-                                                    }
+                                              if (_con.subTotal >=
+                                                  _con.carts
+                                                      .elementAt(0)
+                                                      .food
+                                                      .restaurant
+                                                      .minOrderPrice) {
+                                                setState(() {
+                                                  isLoading = true;
+                                                  settingRepo
+                                                      .initSettings()
+                                                      .then((setting) {
+                                                    print('called checkout');
+                                                    setState(() {
+                                                      isLoading = false;
+                                                      if (setting
+                                                              .checkoutAlertEnabled ==
+                                                          '1') {
+                                                        checkoutAlert(setting
+                                                            .checkoutAlertMessage);
+                                                      } else {
+                                                        checkLocationPermission();
+                                                      }
+                                                    });
                                                   });
                                                 });
-                                              });
+                                              } else {
+                                                minOrderAlert(_con.carts
+                                                    .elementAt(0)
+                                                    .food
+                                                    .restaurant
+                                                    .minOrderPrice);
+                                              }
                                             },
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 14),

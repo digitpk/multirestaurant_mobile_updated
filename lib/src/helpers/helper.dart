@@ -114,30 +114,27 @@ class Helper {
         maxLines: 1,
         text: setting.value?.currencyRight != null && setting.value?.currencyRight == false
             ? TextSpan(
-                text: setting.value?.defaultCurrency,
-                style: style ?? Theme.of(context).textTheme.subhead,
-                children: <TextSpan>[
-                  TextSpan(text: myPrice.toStringAsFixed(2) ?? '', style: style ?? Theme.of(context).textTheme.subhead),
-                ],
-              )
+          text: setting.value?.defaultCurrency,
+          style: style ?? Theme.of(context).textTheme.subhead,
+          children: <TextSpan>[
+            TextSpan(text: myPrice.toStringAsFixed(2) ?? '', style: style ?? Theme.of(context).textTheme.subhead),
+          ],
+        )
             : TextSpan(
-                text: myPrice.toStringAsFixed(2) ?? '',
-                style: style ?? Theme.of(context).textTheme.subhead,
-                children: <TextSpan>[
-                  TextSpan(
-                      text: setting.value?.defaultCurrency,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize:
-                              style != null ? style.fontSize - 4 : Theme.of(context).textTheme.subhead.fontSize - 4)),
-                ],
-              ),
+          text: myPrice.toStringAsFixed(2) ?? '',
+          style: style ?? Theme.of(context).textTheme.subhead,
+          children: <TextSpan>[
+            TextSpan(
+                text: setting.value?.defaultCurrency,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400, fontSize: style != null ? style.fontSize - 4 : Theme.of(context).textTheme.subhead.fontSize - 4)),
+          ],
+        ),
       );
     } catch (e) {
       return Text('');
     }
   }
-
   static double getTotalOrderPrice(FoodOrder foodOrder, double tax) {
     double total = foodOrder.price * foodOrder.quantity;
     foodOrder.extras.forEach((extra) {
@@ -150,8 +147,10 @@ class Helper {
   }
 
   static String getDistance(double distance) {
-    // TODO get unit from settings
-    return distance != null ? distance.toStringAsFixed(2) + " mi" : "";
+    print('before convert distance:$distance');
+    distance = distance * 1.60934 * 1.60934;
+    print('after convert distance:$distance');
+    return distance.toStringAsFixed(2) + " km";
   }
 
   static String skipHtml(String htmlString) {
@@ -260,5 +259,31 @@ class Helper {
     }
     print('resOpeningStatus:$resOpeningStatus');
     return resOpeningStatus;
+  }
+  static String getRandomAvatar(){
+    List<String> listOfAvatar = List();
+    listOfAvatar.add("assets/img/avatar_1.png");
+    listOfAvatar.add("assets/img/avatar_2.png");
+    listOfAvatar.add("assets/img/avatar_3.png");
+    listOfAvatar.add("assets/img/avatar_4.png");
+    listOfAvatar.add("assets/img/avatar_5.png");
+    listOfAvatar.add("assets/img/avatar_6.png");
+    listOfAvatar.add("assets/img/avatar_7.png");
+    listOfAvatar.add("assets/img/avatar_8.png");
+    listOfAvatar.add("assets/img/avatar_9.png");
+    listOfAvatar.add("assets/img/avatar_10.png");
+    listOfAvatar.add("assets/img/avatar_11.png");
+    listOfAvatar.add("assets/img/avatar_12.png");
+    listOfAvatar.add("assets/img/avatar_13.png");
+    listOfAvatar.add("assets/img/avatar_14.png");
+    listOfAvatar.add("assets/img/avatar_15.png");
+    listOfAvatar.add("assets/img/avatar_16.png");
+    listOfAvatar.add("assets/img/avatar_17.png");
+    int min = 0;
+    int max = 16;
+    Random rnd = new Random();
+    int randomNumber = min + rnd.nextInt(max - min);
+    print('random Number:$randomNumber');
+    return listOfAvatar[randomNumber];
   }
 }

@@ -128,8 +128,8 @@ class RestaurantController extends ControllerMVC {
       setState(() => categories.add(_category));
     }, onError: (a) {}, onDone: () {});
   }
-  void listenForCategoriesWithFoods() async {
-    final Stream<CategoryWithFoods> stream = await getCategoriesWithFoods();
+  void listenForCategoriesWithFoods(String id) async {
+    final Stream<CategoryWithFoods> stream = await getCategoriesWithFoods(id);
     stream.listen((CategoryWithFoods _category) {
       setState(() => categoriesWithFoods.add(_category));
     }, onError: (a) {}, onDone: () {

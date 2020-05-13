@@ -97,12 +97,16 @@ Future<bool> removeCart(Cart cart) async {
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
   final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}?$_apiToken';
+  print('removeCart:$url');
   final client = new http.Client();
   final response = await client.delete(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
   );
-  return Helper.getBoolData(json.decode(response.body));
+  print('removeCart Response:${json.decode(response.body)}');
+//  return Helper.getBoolData(json.decode(response.body));
+  Map<String, dynamic> jsonMap  = json.decode(response.body);
+  return jsonMap['success'];
 }
 Future<Cart> removeCartWithId() async {
   User _user = userRepo.currentUser.value;

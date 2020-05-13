@@ -7,6 +7,7 @@ import 'package:food_delivery_app/src/repository/user_repository.dart' as reposi
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class UserController extends ControllerMVC {
   User user = new User();
@@ -18,7 +19,7 @@ class UserController extends ControllerMVC {
   String otp;
   String verificationId;
   bool isVerified = false;
-
+  bool isLoading = false;
   UserController() {
     loginFormKey = new GlobalKey<FormState>();
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -31,24 +32,91 @@ class UserController extends ControllerMVC {
 
   void login() async {
     if (loginFormKey.currentState.validate()) {
-      if ((user.phone != null && user.phone.trim().length > 0) &&
+      setState((){
+        isLoading = true;
+      });
+
+      /*if ((user.phone != null && user.phone.trim().length > 0) &&
           ((user.email != null && user.email.trim().length > 0) ||
               (user.password != null && user.password.trim().length > 0))) {
         showErrorAndGoBack(S.current.enter_email_or_phone, false);
-      } else if (!isVerified &&
+      } else*/ if (!isVerified &&
           (user.phone != null && user.phone.trim() != "") &&
           (user.email == null || user.email.trim() == "")) {
         sendOTP();
       } else {
         addCountryCode();
-        repository.login(user).then((value) {
+        repository.login(user,isVerified).then((value) {
           //print(value.apiToken);
           if (value != null && value.apiToken != null) {
+            setState((){
+              isLoading = false;
+            });
             scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text(S.current.welcome + value.name),
             ));
             //Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
             repository.setUserEmail(user.email);
+            goToDashboard();
+          } else {
+            setState((){
+              isLoading = false;
+            });
+            scaffoldKey.currentState.showSnackBar(SnackBar(
+              content: Text(
+//                  S.current.wrong_email_or_password
+                 value.message
+              ),
+            ));
+            appLoginFailAlert(value.message);
+          }
+        });
+      }
+    }
+  }
+  void appLoginFailAlert(String message) {
+    Alert(
+      context: context,
+      style: AlertStyle(
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+      ),
+      type: AlertType.info,
+      title: S.of(context).alert_title_login_fail,
+      desc: message,
+      buttons: [
+        DialogButton(
+          child: Text(
+            S.of(context).alert_ok,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.of(context).pop();
+          },
+          width: 120,
+        )
+      ],
+    ).show();
+  }
+  void register() async {
+    if (loginFormKey.currentState.validate()) {
+      setState((){
+        isLoading = true;
+      });
+
+      if (!isVerified) {
+        sendOTP();
+      } else {
+        repository.register(user).then((value) {
+          setState((){
+            isLoading = false;
+          });
+          if (value != null && value.apiToken != null) {
+            scaffoldKey.currentState.showSnackBar(SnackBar(
+              content: Text(S.current.welcome + value.name),
+            ));
+            //Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
             goToDashboard();
           } else {
             scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -57,25 +125,6 @@ class UserController extends ControllerMVC {
           }
         });
       }
-    }
-  }
-
-  void register() async {
-    if (loginFormKey.currentState.validate()) {
-      loginFormKey.currentState.save();
-      repository.register(user).then((value) {
-        if (value != null && value.apiToken != null) {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.current.welcome + value.name),
-          ));
-          //Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
-          goToDashboard();
-        } else {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(S.current.wrong_email_or_password),
-          ));
-        }
-      });
     }
   }
   void goToDashboard() {
@@ -112,13 +161,16 @@ class UserController extends ControllerMVC {
 
       addCountryCode();
 
-      var response = await repository.isUserExist(user);
+      /*var response = await repository.isUserExist(user);
 
       if ((this.user.isForLogin && response.statusCode != 200) ||
           !this.user.isForLogin && response.statusCode == 200) {
         showErrorAndGoBack(json.decode(response.body)['message'], false);
-      } else {
+      } else {*/
         final PhoneCodeSent smsOTPSent = (String verId, [int forceCodeResend]) {
+          setState((){
+            isLoading = false;
+          });
           this.verificationId = verId;
           Navigator.of(scaffoldKey.currentContext).pushNamed('/OTP',
               arguments: RouteArgument(
@@ -140,25 +192,40 @@ class UserController extends ControllerMVC {
                 onVerified();
               },
               verificationFailed: (AuthException exception) {
+                setState((){
+                  isLoading = false;
+                });
                 showErrorAndGoBack(exception.message, false);
               });
         } catch (e) {
+          setState((){
+            isLoading = false;
+          });
           showErrorAndGoBack(e.message, false);
         }
-      }
+      //}
     }
   }
 
   verify() async {
     if (loginFormKey.currentState.validate()) {
-      loginFormKey.currentState.save();
+      setState((){
+        isLoading = true;
+      });
       final AuthCredential credential = PhoneAuthProvider.getCredential(
         verificationId: verificationId,
         smsCode: this.otp,
       );
       FirebaseAuth.instance.signInWithCredential(credential).then((user) {
+        setState((){
+          isLoading = false;
+        });
+        isVerified = true;
         onVerified();
       }).catchError((error) {
+        setState((){
+          isLoading = false;
+        });
         showErrorAndGoBack(error.message, true);
       });
     }
@@ -185,7 +252,6 @@ class UserController extends ControllerMVC {
         ).build(context));
   }
   void onVerified() {
-    isVerified = true;
     if (user.isForLogin) {
       login();
     } else {

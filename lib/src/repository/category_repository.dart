@@ -26,8 +26,10 @@ Future<Stream<ResCategory>> getResCategories() async {
   return resCategoryStream;
 }
 Future<Stream<Category>> getCategories() async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}categories';
-
+  User _user = await getCurrentUser();
+  final String _apiToken = 'api_token=${_user.apiToken}';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}categories?$_apiToken&res_category_id=${HomeController.resCatIdRefresh}';
+  print('GetCategories:$url');
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
@@ -38,10 +40,11 @@ Future<Stream<Category>> getCategories() async {
       .expand((data) => (data as List))
       .map((data) => Category.fromJSON(data));
 }
-Future<Stream<CategoryWithFoods>>  getCategoriesWithFoods() async {
+Future<Stream<CategoryWithFoods>>  getCategoriesWithFoods(String id) async {
   User _user = await getCurrentUser();
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}foodswithcategories?$_apiToken&res_category_id=${HomeController.resCatIdRefresh}';
+//  final String url = '${GlobalConfiguration().getString('api_base_url')}foodswithcategories?$_apiToken&res_category_id=${HomeController.resCatIdRefresh}';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}foodswithcategories?$_apiToken&res_category_id=${HomeController.resCatIdRefresh}&restaurant_id=$id';
   print('getCategoriesWithFoods :$url');
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));

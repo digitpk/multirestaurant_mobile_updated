@@ -22,6 +22,7 @@ class Setting {
   String checkoutAlertEnabled = "0";
   String checkoutAlertMessage = "";
   String messageClose = "";
+  String announcement = "";
   String town_area_message = "";
   String town_area_distance = "0";
   double town_area_lat = 0.0;
@@ -44,7 +45,8 @@ class Setting {
     enableVersion = jsonMap['enable_version'] == null ? false : true;
     defaultTax = double.tryParse(jsonMap['default_tax']) ?? 0.0;
     defaultCurrency = jsonMap['default_currency'] ?? '';
-    currencyRight = jsonMap['currency_right'] == null ? false : true;
+    currencyRight = jsonMap['currency_right'] == null ? false : jsonMap['currency_right'];
+//    currencyRight = jsonMap['currency_right'] == null ? false : false;
     payPalEnabled = jsonMap['enable_paypal'] == null ? false : true;
     stripeEnabled = jsonMap['enable_stripe'] == null ? false : true;
     town_area_lat = double.parse(jsonMap['town_area_lat']) ?? 0.0;
@@ -55,6 +57,7 @@ class Setting {
     checkoutAlertEnabled = jsonMap['block_checkout'] ?? '0';
     checkoutAlertMessage = jsonMap['block_checkout_msg'] ?? '';
     messageClose = jsonMap['message_close'] ?? '';
+    announcement = jsonMap['announcement'] ?? '';
   }
 
   Map toMap() {

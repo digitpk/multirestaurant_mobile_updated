@@ -17,7 +17,7 @@ class Restaurant {
   double distance;
   bool resOpeningStatus;
   List<ResOpeningHours> res_opening_hours;
-
+  double minOrderPrice;
   Restaurant();
 
   Restaurant.fromJSON(Map<String, dynamic> jsonMap)
@@ -40,6 +40,7 @@ class Restaurant {
     information = jsonMap['information'];
     latitude = jsonMap['latitude'];
     longitude = jsonMap['longitude'];
+    minOrderPrice = jsonMap['min_order_price'] != null ? double.parse(jsonMap['min_order_price'].toString()): 0;
     distance = jsonMap['distance'] != null
         ? double.parse(jsonMap['distance'].toString())
         : 0.0;
