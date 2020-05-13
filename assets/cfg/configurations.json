@@ -1,15 +1,13 @@
 {
   "base_url_old": "https://multi-restaurants.smartersvision.com/",
   "api_base_url_old": "https://multi-restaurants.smartersvision.com/api/",
-  "base_url_local_202": "http://202.131.107.107:8013/fadi/public",
-  "api_base_url_local_202": "http://202.131.107.107:8013/fadi/public/api/",
   "base_url_local_202_live": "http://202.131.107.107:8013/fadi_live/public/",
   "api_base_url_local_202_live": "http://202.131.107.107:8013/fadi_live/public/api/",
-  "base_url_local_192": "http://192.168.1.123:8013/fadi/public",
-  "api_base_url_local_192": "http://192.168.1.123:8013/fadi/public/api/",
-  "base_url_live": "http://cp.diny.co.il/Laravel/public/",
-  "api_base_url_live": "http://cp.diny.co.il/Laravel/public/api/",
-  "base_url": "http://cp.diny.co.il/Laravel/public/",
-  "api_base_url": "http://cp.diny.co.il/Laravel/public/api/",
+  "base_url_live": "https://login.tazmin.net/",
+  "api_base_url_live": "https://login.tazmin.net/api/",
+  "base_url_live_old": "http://cp.diny.co.il/Laravel/public/",
+  "api_base_url_live_old": "http://cp.diny.co.il/Laravel/public/api/",
+  "base_url": "https://login.tazmin.net/",
+  "api_base_url": "https://login.tazmin.net/api/",
   "google_maps_key" : "AIzaSyAMcs3BH0ssZJGy3_PPpNrBpuNP95vYjcA"
 }
