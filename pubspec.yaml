@@ -98,6 +98,24 @@ flutter:
     - assets/img/logo.png
     - assets/img/hebrew.png
     - assets/img/res_cat.png
+    - assets/img/current_location.png
+    - assets/img/avatar_1.png
+    - assets/img/avatar_2.png
+    - assets/img/avatar_3.png
+    - assets/img/avatar_4.png
+    - assets/img/avatar_5.png
+    - assets/img/avatar_6.png
+    - assets/img/avatar_7.png
+    - assets/img/avatar_8.png
+    - assets/img/avatar_9.png
+    - assets/img/avatar_10.png
+    - assets/img/avatar_11.png
+    - assets/img/avatar_12.png
+    - assets/img/avatar_13.png
+    - assets/img/avatar_14.png
+    - assets/img/avatar_15.png
+    - assets/img/avatar_16.png
+    - assets/img/avatar_17.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
