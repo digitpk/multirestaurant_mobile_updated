@@ -36,7 +36,7 @@ dependencies:
   html: ^0.14.0+2
   shared_preferences: ^0.5.6
   flutter_html: ^0.10.4
-  flutter_svg: ^0.14.2
+  flutter_svg: ^0.17.4
   location: ^3.0.0
   dynamic_theme: ^1.0.0
   flutter_inappbrowser: ^1.2.2
